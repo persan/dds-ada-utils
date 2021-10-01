@@ -1,0 +1,43 @@
+with "dds.gpr";
+with "dds-ada.gpr";
+with "stream_tools.gpr";
+
+library project Dds.Ada.Utils is
+
+   for Create_Missing_Dirs use "True";
+
+   for Source_Dirs use (".", "src/**");
+   for Object_Dir use ".obj";
+   for Languages use ("Ada", "Makefile", "Mark Down");
+   for Library_Name use project'Name;
+   for Library_Dir use "lib";
+
+   package Make is
+      for Makefile use "Makefile";
+   end Make;
+
+   package Builder is
+      for Switches ("ada") use ("-j0", "-s");
+   end Builder;
+
+   package Compiler is
+      for Driver ("XML") use "";
+      for Driver ("IDL") use "";
+      for Driver ("Mark Down") use "";
+      for Driver ("Makefile") use "";
+      Switches := ("-fdata-sections", "-ffunction-sections", "-fPIC", "-fstack-check", "-fcallgraph-info=su,da", "-g");
+      for Switches ("Ada") use Switches & ("-gnatf",  "-gnatQ", "-gnatwa", "-gnatyABabcdfhiklnprtux");
+   end Compiler;
+
+   package Binder is
+      for Switches ("ada") use ("-E");
+   end Binder;
+
+   package Naming is
+      for Spec_Suffix ("XML") use ".xml";
+      for Spec_Suffix ("Mark Down") use ".md";
+      for Body_Suffix ("IDL") use ".idl";
+      for Spec_Suffix ("makefile") use ".mk";
+      for Specification_Exceptions ("makefile") use ("Makefile");
+   end Naming;
+end Dds.Ada.Utils;
