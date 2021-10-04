@@ -28,7 +28,12 @@ begin
             Put_Line ("sending> " &  "Sample:" & I'Img);
             Move ("Sample:" & I'Img, Data.Name);
             Data.Name_Last := I;
-            Writer.Write (Data);
+            begin
+               Writer.Write (Data);
+            exception
+               when DDS.TIMEOUT =>
+                  Put_Line ("Unable to send> " &  "Sample:" & I'Img);
+            end;
             delay 0.01;
          end loop;
 

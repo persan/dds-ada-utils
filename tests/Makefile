@@ -1,4 +1,8 @@
+PROJECT=dds-ada-utils-tests.gpr
+
 all:
-	@true
+	gprbuild -P ${PROJECT}
+	./bin/dds-mq-tests_simple-main
+
 %:
 	@true

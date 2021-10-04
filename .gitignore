@@ -17,4 +17,6 @@ b__*
 *.so
 *.idx
 gnatinspect.db
+.#*#
+.clang-format
 /.obj
