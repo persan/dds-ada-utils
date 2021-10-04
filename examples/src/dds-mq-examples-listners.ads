@@ -1,5 +1,5 @@
-with DDS.Mq.Tests.Messaging.Server;
-package DDS.Mq.Tests.Listners is
+with DDS.Mq.Examples.Messaging.Server;
+package DDS.Mq.Examples.Listners is
 
    type Ref is new Messaging.Server.Listners.Ref with record
       null;
@@ -10,4 +10,4 @@ package DDS.Mq.Tests.Listners is
                       Reader : not null Messaging.Server.Ref_Access;
                       Data   : DDS.String);
 
-end DDS.Mq.Tests.Listners;
+end DDS.Mq.Examples.Listners;

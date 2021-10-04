@@ -1,12 +1,12 @@
 with "gnatcoll.gpr";
 with "../dds-ada-utils.gpr";
 
-project Dds.Ada.Utils.Tests is
+project Dds.Ada.Utils.Examples is
 
-   -- for Main use ("dds-mk4_request_response-tests-main.adb") & project'Main;
-   -- for Main use ("dds-mq-tests-main.adb") & project'Main;
+   -- for Main use ("dds-mk4_request_response-examples-main.adb") & project'Main;
+   -- for Main use ("dds-mq-examples-main.adb") & project'Main;
 
-   for Main use ("dds-mq-tests-simple-main.adb") & project'Main;
+   for Main use ("dds-mq-examples-simple-main.adb") & project'Main;
 
    for Languages use ("Ada");
    for Source_Dirs use ("src/**");
@@ -20,5 +20,5 @@ project Dds.Ada.Utils.Tests is
    package Naming renames DDS.Ada.Utils.Naming;
 
 
-end Dds.Ada.Utils.Tests;
+end Dds.Ada.Utils.Examples;
 

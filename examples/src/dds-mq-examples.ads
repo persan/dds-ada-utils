@@ -6,6 +6,6 @@ with DDS.Mq.Messaging_Generic;
 with DDS.Mq.Messaging_Generic.Client_Generic;
 with DDS.Mq.Messaging_Generic.Server_Generic;
 
-package DDS.Mq.Tests is
+package DDS.Mq.Examples is
 
-end DDS.Mq.Tests;
+end DDS.Mq.Examples;

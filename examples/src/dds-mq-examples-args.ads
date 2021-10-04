@@ -5,7 +5,7 @@ with DDS.DomainParticipantFactory;
 with DDS.Topic;
 with GNATCOLL.Opt_Parse; use GNATCOLL.Opt_Parse;
 with GNAT.Source_Info;
-package DDS.Mq.Tests.Args is
+package DDS.Mq.Examples.Args is
 
    Parser : Argument_Parser := Create_Argument_Parser
      (Help => "P");
@@ -66,4 +66,4 @@ package DDS.Mq.Tests.Args is
       Long   => "--version",
       Help   => "Print current program version and exit");
 
-end DDS.Mq.Tests.Args;
+end DDS.Mq.Examples.Args;

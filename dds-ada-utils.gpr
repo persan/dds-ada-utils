@@ -26,7 +26,7 @@ library project Dds.Ada.Utils is
       for Driver ("Mark Down") use "";
       for Driver ("Makefile") use "";
       Switches := ("-fdata-sections", "-ffunction-sections", "-fPIC", "-fstack-check", "-fcallgraph-info=su,da", "-g");
-      for Switches ("Ada") use Switches & ("-gnatf",  "-gnatQ", "-gnatwa", "-gnatyABabcdfhiklnprtux");
+      for Switches ("Ada") use Switches & ("-gnatf",  "-gnatQ", "-gnatwa", "-gnatwurl", "-gnatyABabcdfhiklnprtux");
    end Compiler;
 
    package Binder is

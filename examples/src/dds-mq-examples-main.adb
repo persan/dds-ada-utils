@@ -4,7 +4,7 @@ with DDS.Mq.Args;
 with GNAT.Exception_Traces;
 with GNAT.Traceback.Symbolic;
 with Ada.Text_IO; use Ada.Text_IO;
-procedure DDS.Mq.Tests.Main  is
+procedure DDS.Mq.Examples.Main  is
    use DDS.Mq.Args;
 begin
    GNAT.Exception_Traces.Trace_On (GNAT.Exception_Traces.Every_Raise);
@@ -18,10 +18,10 @@ begin
          Factory      : constant DDS.DomainParticipantFactory.Ref_Access := DDS.DomainParticipantFactory.Get_Instance;
 
          Participant  : DDS.DomainParticipant.Ref_Access;
-         Listner      : aliased DDS.Mq.Tests.Listner;
+         Listner      : aliased DDS.Mq.Examples.Listner;
 
-         Writer  : DDS.Mq.Tests.Client.Ref_Access;
-         Reader  : DDS.Mq.Tests.Server.Ref_Access;
+         Writer  : DDS.Mq.Examples.Client.Ref_Access;
+         Reader  : DDS.Mq.Examples.Server.Ref_Access;
          Data    : DDS.String;
       begin
          Participant := Factory.Create_Participant_With_Profile (Domain_Id    => Domain_Id.Get,
@@ -49,4 +49,4 @@ begin
       end;
 
    end if;
-end DDS.Mq.Tests.Main;
+end DDS.Mq.Examples.Main;

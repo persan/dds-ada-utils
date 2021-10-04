@@ -1,17 +1,17 @@
 with DDS.DomainParticipant;
 with DDS.DomainParticipantFactory;
-with DDS.Mq.Tests.Args;
+with DDS.Mq.Examples.Args;
 with GNAT.Exception_Traces;
 with GNAT.Traceback.Symbolic;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Fixed;
-with DDS.Mq.Tests.Simple.Messaging.Client;
-with DDS.Mq.Tests.Simple.Messaging.Server;
-with DDS.Mq.Tests.Simple.Listners;
+with DDS.Mq.Examples.Simple.Messaging.Client;
+with DDS.Mq.Examples.Simple.Messaging.Server;
+with DDS.Mq.Examples.Simple.Listners;
 
-with DDS.Mq.Tests.Simple.Application;
-procedure DDS.Mq.Tests.Simple.Main  is
-   use DDS.Mq.Tests.Args;
+with DDS.Mq.Examples.Simple.Application;
+procedure DDS.Mq.Examples.Simple.Main  is
+   use DDS.Mq.Examples.Args;
    use Ada.Strings.Fixed;
 
    Data         : Message_Type;
@@ -51,4 +51,4 @@ begin
       end;
 
    end if;
-end DDS.Mq.Tests.Simple.Main;
+end DDS.Mq.Examples.Simple.Main;
