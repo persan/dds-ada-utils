@@ -39,7 +39,8 @@ package body Dds.Mq.Simple_Messaging_Generic is
          Profile_Name => Default_Profile_Name,
          Topic_Name   => Topic_Name);
       Qos.Reliability.Kind := DDS.RELIABLE_RELIABILITY_QOS;
-      Qos.History := (KEEP_ALL_HISTORY_QOS, Queue_Length);
+      Qos.History.Kind := KEEP_ALL_HISTORY_QOS;
+      Qos.History.Depth :=  Queue_Length;
       Qos.Resource_Limits.Max_Samples_Per_Instance := Queue_Length;
       Qos.Resource_Limits.Max_Samples := Queue_Length;
       Qos.Resource_Limits.Initial_Samples := Queue_Length;
