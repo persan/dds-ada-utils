@@ -4,12 +4,14 @@ with DDS.DataReader;
 with DDS.DomainParticipantFactory;
 with DDS.TopicDescription;
 with DDS.ConditionSeq;
+with GNAT.Source_Info;
 package body Dds.Mq.Messaging_Generic.Server_Generic is
 
    function Get_Subscriber (Self : not null access Ref) return DDS.Subscriber.Ref_Access is
    begin
       return Self.Subscriber;
    end;
+
    function Get_DataReader (Self : not null access Ref) return Reader.Ref_Access is
    begin
       return Self.R;
@@ -147,10 +149,14 @@ package body Dds.Mq.Messaging_Generic.Server_Generic is
 
    procedure Finalize (Self : in out Ref_Access) is
       procedure Free is new Ada.Unchecked_Deallocation (Ref'Class, Ref_Access);
+      P : aliased WaitSetProperty_T := (1, To_Duration_T (0.0001));
    begin
       Self.Continue := False;
+      Self.Guard.Set_Trigger_Value (True);
+      while Self.Internal_Listner'Callable loop
+         delay 0.05;
+      end loop;
       Self.Subscriber.Delete_DataReader (DDS.DataReader.Ref_Access (Self.R));
-      abort Self.Internal_Listner;
       Free (Self);
    end Finalize;
 
@@ -161,12 +167,14 @@ package body Dds.Mq.Messaging_Generic.Server_Generic is
       Self.StatusCondition := Self.R.Get_StatusCondition;
       Self.StatusCondition.Set_Enabled_Statuses (DATA_AVAILABLE_STATUS);
       Self.Waitset.Attach_Condition (Self.StatusCondition);
+      Self.Waitset.Attach_Condition (Self.Guard'Access);
+
       while Self.Continue loop
          begin
-            Self.Waitset.Wait (Conditions'Access, 1.0);
+            Self.Waitset.Wait (Conditions'Access, DURATION_INFINITE);
             for I of Self.R.Take (Sample_States => NOT_READ_SAMPLE_STATE) loop
                if I.Sample_Info.Valid_Data then
-                  Self.Listner.On_Data (I.Data.all);
+                  Self.Listner.On_Data (Self, I.Data.all);
                end if;
             end loop;
          exception
@@ -174,7 +182,6 @@ package body Dds.Mq.Messaging_Generic.Server_Generic is
                null;
          end;
       end loop;
-
    end Internal_Listner;
 
 end Dds.Mq.Messaging_Generic.Server_Generic;

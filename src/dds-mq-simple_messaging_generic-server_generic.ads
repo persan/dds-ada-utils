@@ -18,10 +18,10 @@ package Dds.Mq.Simple_Messaging_Generic.Server_Generic is
       type Ref is limited interface;
 
       type Ref_Access is access all Ref'Class;
-      procedure Hoop (Self : not null access Ref) is null;
 
-      procedure On_Data (Self : not null access Ref;
-                         Data : Data_Type) is abstract;
+      procedure On_Data (Self   : not null access Ref;
+                         Reader : not null  Server_Generic.Ref_Access;
+                         Data   : Data_Type) is abstract;
    end Listners;
 
    function Create
@@ -88,8 +88,10 @@ private
       Parent  : Ref_Access;
       Listner : Listners.Ref_Access;
    end record;
-   overriding procedure On_Data (Self : not null access Local_Listner;
-                                 Data : DDS.Octets);
+
+   overriding procedure On_Data (Self   : not null access Local_Listner;
+                                 Reader : not null  Server_Impl.Ref_Access;
+                                 Data   : DDS.Octets);
 
    type Ref is limited new Simple_Messaging_Generic.Ref with record
       Impl              : Server_Impl.Ref_Access;

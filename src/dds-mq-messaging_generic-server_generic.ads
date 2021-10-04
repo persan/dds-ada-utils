@@ -3,11 +3,11 @@ with DDS.StatusCondition;
 with DDS.Subscriber;
 with DDS.Treats_Generic;
 with DDS.Typed_DataReader_Generic;
-with DDS.Typed_DataWriter_Generic;
 
 private with Ada.Finalization;
-with DDS.WaitSet;
+private with DDS.WaitSet;
 private with GNAT.Strings;
+private with DDS.GuardCondition;
 ---
 generic
    with package Reader is new DDS.Typed_DataReader_Generic (Treats);
@@ -22,8 +22,13 @@ package Dds.Mq.Messaging_Generic.Server_Generic is
 
       type Ref_Access is access all Ref'Class;
 
-      procedure On_Data (Self : not null access Ref;
-                         Data : Treats.Data_Type) is abstract;
+      procedure On_Data (Self   : not null access Ref;
+                         Reader : not null  Server_Generic.Ref_Access;
+                         Data   : Treats.Data_Type) is abstract;
+
+      procedure On_Sample_Lost (Self   : not null access Ref;
+                                Reader : not null  Server_Generic.Ref_Access;
+                                Status : DDS.SampleLostStatus) is null;
    end Listners;
 
    function Create
@@ -105,6 +110,7 @@ private
       Listner          : Listners.Ref_Access;
       Continue         : Boolean := True;
       StatusCondition  : DDS.StatusCondition.Ref_Access;
+      Guard            : aliased DDS.GuardCondition.Ref;
       WaitSet          : aliased DDS.WaitSet.Ref;
    end record;
 

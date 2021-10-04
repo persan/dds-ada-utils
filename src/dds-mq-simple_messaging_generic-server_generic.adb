@@ -131,6 +131,7 @@ package body Dds.Mq.Simple_Messaging_Generic.Server_Generic is
                                        Topic_QoS   => Topic_QoS,
                                        Reader_QoS  => Reader_QoS);
       Ret.The_Local_Listner.Listner := Listner;
+      Ret.The_Local_Listner.Parent := Ret;
       return Ret;
    end Create;
 
@@ -151,10 +152,11 @@ package body Dds.Mq.Simple_Messaging_Generic.Server_Generic is
       return Create (Participant, Subscriber, Listner, Topic_Name, Topic_Qos, Reader_QoS);
    end;
 
-   procedure On_Data (Self : not null access Local_Listner;
-                      Data : DDS.Octets) is
+   procedure On_Data (Self   : not null access Local_Listner;
+                      Reader : not null  Server_Impl.Ref_Access;
+                      Data   : DDS.Octets) is
    begin
-      Self.Listner.On_Data (As_Data_Type (Data.Value).all);
+      Self.Listner.On_Data (SELF.Parent, As_Data_Type (Data.Value).all);
    end;
    --------------
    -- Finalize --

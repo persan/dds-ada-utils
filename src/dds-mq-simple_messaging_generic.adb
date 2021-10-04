@@ -61,7 +61,7 @@ package body Dds.Mq.Simple_Messaging_Generic is
       Qos.Resource_Limits.Max_Samples_Per_Instance := 2;
       QoS.Protocol.Rtps_Reliable_Writer.High_Watermark := 2;
       QoS.Protocol.Rtps_Reliable_Writer.Low_Watermark := 1;
-      QoS.protocol.rtps_reliable_writer.Heartbeats_Per_Max_Samples := 1;
+      QoS.Protocol.Rtps_Reliable_Writer.Heartbeats_Per_Max_Samples := 1;
       QoS.Availability.Max_Data_Availability_Waiting_Time := To_Duration_T (0.1);
       QoS.Availability.Max_Endpoint_Availability_Waiting_Time := To_Duration_T (0.1);
    end;

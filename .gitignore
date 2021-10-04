@@ -21,3 +21,4 @@ gnatinspect.db
 .clang-format
 /.obj
 *-msg.xml
+/doc
