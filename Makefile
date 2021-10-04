@@ -1,8 +1,11 @@
+PROJECT=dds-ada-utils.gpr
 all:
-	gprbuild
+	gprbuild -P ${PROJECT}
 
 clean:
 	git clean -xdf
 
- test:
+test:
 	${MAKE} -C tests
+doc:
+	gnatdoc --no-subprojects -P ${PROJECT}

@@ -33,6 +33,11 @@ library project Dds.Ada.Utils is
       for Switches ("ada") use ("-E");
    end Binder;
 
+   package Documentation is
+      for Documentation_Dir use project'Project_Dir & "doc";
+      for Image_Dir use project'Project_Dir & "doc/imgaes";
+   end Documentation;
+
    package Naming is
       for Spec_Suffix ("XML") use ".xml";
       for Spec_Suffix ("Mark Down") use ".md";
