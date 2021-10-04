@@ -21,8 +21,9 @@ begin
       begin
          Writer := Client.Create (Topic_Name => Topic_Name);
          Reader := Server.Create
-           (Listner    => Listner'Unchecked_Access,
-            Topic_Name => Topic_Name);
+           (Listner      => Listner'Unchecked_Access,
+            Queue_Lenght => 10,
+            Topic_Name   => Topic_Name);
          delay 1.0;
          for I in 1 .. 100 loop
             Put_Line ("sending> " &  "Sample:" & I'Img);

@@ -10,7 +10,7 @@ package DDS.Mq.Tests_Simple is
 
    type Message_Type is record
       Name_Last : Standard.Natural := 0;
-      Name      : Standard.String (1 .. 32);
+      Name      : Standard.String (1 .. 2000);
    end record;
 
    package Messaging is new DDS.Mq.Simple_Messaging_Generic (Message_Type);

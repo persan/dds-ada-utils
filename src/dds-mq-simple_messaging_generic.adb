@@ -1,7 +1,5 @@
 pragma Ada_2012;
 package body Dds.Mq.Simple_Messaging_Generic is
-   Default_Library_Name : constant DDS.String := To_DDS_String ("BuiltinQosLib");
-   Default_Profile_Name : constant DDS.String := To_DDS_String ("Generic.StrictReliable.LowLatency");
 
    procedure Get_DomainParticipant_Qos
      (QoS  : in out DDS.DomainParticipantQos)  is
@@ -10,7 +8,9 @@ package body Dds.Mq.Simple_Messaging_Generic is
         (QoS          => QoS,
          Library_Name => Default_Library_Name,
          Profile_Name => Default_Profile_Name);
+
       Qos.Transport_Builtin.Mask := TRANSPORTBUILTIN_SHMEM;
+      Qos.Resource_Limits.Topic_Data_Max_Length := Max_Data_Size;
    end;
 
    procedure Get_Topic_Qos (QoS  : in out DDS.TopicQos; Topic_Name : DDS.String)  is
