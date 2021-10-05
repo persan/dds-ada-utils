@@ -19,7 +19,7 @@ package Dds.Mq.Simple_Messaging_Generic is
    --
    --  Get a default DomainParticipantQos based on the default capable
    --  of handling Max_Data_Size large data_types and
-   --  only ShardMemory Enablöed as transport.
+   --  only ShardMemory Enabled as transport.
    --  -------------------------------------------------------------------------
 
    procedure Get_Topic_Qos

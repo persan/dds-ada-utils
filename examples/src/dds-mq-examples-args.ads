@@ -5,9 +5,11 @@ with DDS.DomainParticipantFactory;
 with DDS.Topic;
 with GNATCOLL.Opt_Parse; use GNATCOLL.Opt_Parse;
 with GNAT.Source_Info;
-package DDS.Mq.Examples.Args is
+with Ada.Command_Line;
 
-   Parser : Argument_Parser := Create_Argument_Parser
+package DDS.Mq.Examples.Args is
+   Executable : constant Standard.String := Ada.Command_Line.Command_Name;
+   Parser     : Argument_Parser := Create_Argument_Parser
      (Help => "P");
 
    function Convert (S : Standard.String) return DDS.DomainId_T is (DDS.DomainId_T'Value (S));
