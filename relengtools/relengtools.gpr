@@ -1,4 +1,5 @@
 with "../dds-ada-utils.gpr";
+with "gnatcoll.gpr";
 
 project RelengTools is
 
@@ -8,7 +9,8 @@ project RelengTools is
    for Main use ("relengtool.adb");
    package Compiler is
       for Switches ("Ada")use Dds.Ada.Utils.Compiler'Switches ("Ada") &
-      ("-gnateD" & "VERSION" & "=""" & Dds.Ada.Utils.VERSION & """");
+      ("-gnateD" & "VERSION" & "=""" & Dds.Ada.Utils.VERSION & """",
+       "-gnateD" & "PROJECT" & "=""" & Dds.Ada.Utils'Name & """");
 
    end Compiler;
 
