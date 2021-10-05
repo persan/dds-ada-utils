@@ -1,8 +1,18 @@
-PROJECT=dds-ada-utils-tests.gpr
+PROJECT=dds-ada-utils-examples.gpr
+-include Makefile.conf
+
 
 all:
 	gprbuild -P ${PROJECT}
-	./bin/dds-mq-tests_simple-main
+	dds-mq-examples-simple-main
 
 %:
 	@true
+clean:
+	${MAKE} -C .. ${@}
+	
+edit:
+	gnatstudio -P ${PROJECT}
+
+Makefile.conf:Makefile
+	echo "export PATH:=${PATH}:${CURDIR}/bin" >${@}
