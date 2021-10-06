@@ -1,0 +1,5 @@
+# files containng version numbers to be updated:
+
+dds-ada-utils.gpr
+
+src/dds-mq.ads
