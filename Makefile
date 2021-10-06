@@ -4,6 +4,8 @@ PROJECT=dds-ada-utils.gpr
 
 all:
 	gprbuild -P ${PROJECT}
+	gprbuild -P relengtools/relengtools.gpr
+	gprbuild -P examples/dds-ada-utils-examples.gpr
 
 clean:
 	git clean -xdf
