@@ -10,15 +10,16 @@ with DDS.Typed_DataWriter_Generic;
 
 generic
    type Key_Type is limited private;
-   with package Reply_Reader is new DDS.Typed_DataReader_Generic (<>);
-   with package Request_Writer   is new DDS.Typed_DataWriter_Generic (<>);
-   with procedure Copy_Key (Target : out Key_Type; Src : Reply_Reader.Treats.Data_Type) is <>;
-   with procedure Copy_Key (Target : out Request_Writer.Treats.Data_Type; Src : Key_Type) is <>;
+   with package Reply_Reader is new DDS.Typed_DataReader_Generic (Reply_Treats);
+   with package Request_Writer   is new DDS.Typed_DataWriter_Generic (Request_Treats);
+   with procedure Copy_Key (Target : out Key_Type; Src : Reply_Treats.Data_Type) is <>;
+   with procedure Copy_Key (Target : out Request_Treats.Data_Type; Src : Key_Type) is <>;
 package Dds.Mk4_Request_Response.Requester_Generic is
 
    package Listener is
       type Ref is limited interface;
       type Ref_Access is access all Ref'Class;
+
    end Listener;
 
    type Ref is limited  new Dds.Mk4_Request_Response.Ref with private;

@@ -15,21 +15,60 @@ generic
    with procedure Copy_Key (Target : out Key_Type; Src : Request_Reader.Treats.Data_Type) is <>;
    with procedure Copy_Key (Target : out Reply_Writer.Treats.Data_Type; Src : Key_Type) is <>;
 package Dds.Mk4_Request_Response.Responder_Generic is
-
    type Ref is limited  new Dds.Mk4_Request_Response.Ref with private;
    type Ref_Access is access all Ref'Class;
 
-   function Create (Topic_Base_Name  : DDS.String;
-                    Participant      : not null DDS.DomainParticipant.Ref_Access;
-                    Publisher        : DDS.Publisher.Ref_Access := null;
-                    Subscriber       : DDS.Subscriber.Ref_Access := null;
-                    Request_QoS      : access DDS.DataReaderQoS := null;
-                    Reply_QoS        : access DDS.DataWriterQos := null) return Ref_Access;
+   package Listners is
+      type Ref is limited  interface;
+      type Ref_Access is access all Ref'Class;
+      procedure On_Request (Self    : not null access Ref;
+                            Request : Request_Reader.Treats.Data_Type;
+                            Replay  : Reply_Writer.Treats.Data_Type) is abstract;
+   end Listners;
 
-   function Create (Topic_Base_Name  : DDS.String;
-                    Participant      : not null DDS.DomainParticipant.Ref_Access;
-                    Publisher        : DDS.Publisher.Ref_Access := null;
-                    Subscriber       : DDS.Subscriber.Ref_Access := null;
+   function Create (Participant        : not null DDS.DomainParticipant.Ref_Access;
+                    Request_Topic_Name : DDS.String;
+                    Reply_Topic_Name   : DDS.String;
+                    Publisher          : DDS.Publisher.Ref_Access;
+                    Subscriber         : DDS.Subscriber.Ref_Access;
+                    Request_Topic_Qos  : Dds.TopicQos;
+                    Request_Reader_QoS : DDS.DataReaderQoS;
+                    Reply_Topic_Qos    : Dds.TopicQos;
+                    Reply_Writer_QoS   : DDS.DataWriterQos) return Ref_Access;
+
+   function Create (Participant        : not null DDS.DomainParticipant.Ref_Access;
+                    Request_Topic_Name : DDS.String;
+                    Reply_Topic_Name   : DDS.String;
+                    Request_Topic_Qos  : Dds.TopicQos;
+                    Request_Reader_QoS : DDS.DataReaderQoS;
+                    Reply_Topic_Qos    : Dds.TopicQos;
+                    Reply_Writer_QoS   : DDS.DataWriterQos) return Ref_Access;
+
+   function Create (Participant        : not null DDS.DomainParticipant.Ref_Access;
+                    Topic_Base_Name    : DDS.String;
+                    Publisher          : DDS.Publisher.Ref_Access;
+                    Subscriber         : DDS.Subscriber.Ref_Access;
+                    Request_Topic_Qos  : Dds.TopicQos;
+                    Request_Reader_QoS : DDS.DataReaderQoS;
+                    Reply_Topic_Qos    : Dds.TopicQos;
+                    Reply_Writer_QoS   : DDS.DataWriterQos) return Ref_Access;
+
+   function Create (Participant        : not null DDS.DomainParticipant.Ref_Access;
+                    Topic_Base_Name    : DDS.String;
+                    Request_Topic_Qos  : Dds.TopicQos;
+                    Request_Reader_QoS : DDS.DataReaderQoS;
+                    Reply_Topic_Qos    : Dds.TopicQos;
+                    Reply_Writer_QoS   : DDS.DataWriterQos) return Ref_Access;
+
+   function Create (Participant      : not null DDS.DomainParticipant.Ref_Access;
+                    Topic_Base_Name  : DDS.String;
+                    Publisher        : DDS.Publisher.Ref_Access;
+                    Subscriber       : DDS.Subscriber.Ref_Access;
+                    Library          : DDS.String;
+                    Profile          : DDS.String) return Ref_Access;
+
+   function Create (Participant      : not null DDS.DomainParticipant.Ref_Access;
+                    Topic_Base_Name  : DDS.String;
                     Library          : DDS.String;
                     Profile          : DDS.String) return Ref_Access;
 

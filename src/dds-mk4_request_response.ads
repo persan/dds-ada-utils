@@ -1,3 +1,7 @@
+generic
+   with package Reply_Treats is new DDS.Treats_Generic (<>);
+   with package Request_Treates is new DDS.Treats_Generic (<>);
+
 package DDS.Mk4_Request_Response is
    type Ref is tagged limited null record;
    type Ref_Access is access all Ref'Class;
