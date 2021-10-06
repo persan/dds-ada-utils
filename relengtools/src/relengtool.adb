@@ -52,6 +52,14 @@ procedure Relengtool is
         (Parser => Parser,
          Long   => "--major",
          Help   => "Bump major version.");
+
+      Default_VersionSet : constant String := "0.0.0";
+      package VersionSet is new Parse_Option (Parser      => Parser,
+                                              Long        => "--set-version",
+                                              Help        => "Files containing version numbers to be updated default; """ & Default_VersionSet & """.",
+                                              Arg_Type    => Unbounded_String,
+                                              Default_Val => To_Unbounded_String (Default_VersionSet));
+
       Default_RelengFile : constant String := ".releng";
       package RelengFile is new Parse_Option (Parser      => Parser,
                                               Long        => "--relengfile",
@@ -96,6 +104,35 @@ procedure Relengtool is
          Log_Line ("Folder is clean.");
       end if;
    end;
+
+   procedure Check_Branch (Name : String) is
+      use GNAT.Expect;
+      use GNAT.String_Split;
+      use GNAT.Formatted_String;
+      Status : aliased Integer;
+   begin
+      Log_Line ("Checking for branch " & Name);
+      declare
+         Elements : Slice_Set := Create (Get_Command_Output (GIT.all, Argument_String_To_List ("branch").all, Input => "", Status => Status'Access), "" & ASCII.LF);
+      begin
+         for Ix in 1 .. Slice_Count (Elements) loop
+            declare
+               S : constant String := Slice (Elements, Ix);
+            begin
+               if S (S'First) = '*' then
+                  if S (S'First + 2 .. S'Last) /= Name then
+                     Put_Line (Standard_Error, "Not on requested branch:""" & Name & """ (on branch:""" & S (S'First + 2 .. S'Last) & """).");
+                     Ada.Command_Line.Set_Exit_Status (Ada.Command_Line.Failure);
+                     OK := False;
+                  else
+                     Put_Line (Standard_Error, "On requested branch:""" & Name & """.");
+                  end if;
+               end if;
+            end;
+         end loop;
+      end;
+   end;
+
    use all type GNAT.Regpat.Regexp_Flags;
    Matcher : GNAT.Regpat.Pattern_Matcher := GNAT.Regpat.Compile
      (Expression =>  "(.*VERSION(\s*:\s*constant\s+Standard.String|)\s*:=\s*"")\d+\.\d+\.\d+(""\s*;.*)",
@@ -127,22 +164,22 @@ procedure Relengtool is
       return -(Format & Major & Minor & Patch);
    end;
 
-   procedure Update_Version is
+   procedure Update_Version (To : String := Next ($VERSION)) is
+
       procedure Update_File (Path : String) is
          F           : GNAT.OS_Lib.File_Descriptor := GNAT.OS_Lib.Open_Read (Path, GNAT.OS_Lib.Text);
          Buffer_Size : Natural := Natural (GNAT.OS_Lib.File_Length (F));
          Buffer      : String (1 .. Buffer_Size);
          Last        : Integer;
-         V           : constant String := Next ($VERSION);
       begin
-         Log_Line ("Update Version number in : """ & Path & """ to """ & V & """.");
+         Log_Line ("Update Version number in : """ & Path & """ to """ & To & """.");
          Last := GNAT.OS_Lib.Read (F, Buffer'Address, Buffer'Length);
          GNAT.OS_Lib.Close (F);
          GNAT.Regpat.Match (Matcher, Buffer, Matches);
 
          F := GNAT.OS_Lib.Create_File (Path, GNAT.OS_Lib.Text);
          Last := GNAT.OS_Lib.Write (F, Buffer (Matches (1).First)'Address, Matches (1).Last - Matches (1).First + 1);
-         Last := GNAT.OS_Lib.Write (F, V'Address, V'Length);
+         Last := GNAT.OS_Lib.Write (F, To'Address, To'Length);
          Last := GNAT.OS_Lib.Write (F,  Buffer (Matches (3).First)'Address, Matches (3).Last - Matches (3).First + 1);
          GNAT.OS_Lib.Close (F);
       end Update_File;
@@ -196,9 +233,15 @@ begin
       end if;
       Check_Version_Binary;
       Check_Dirty;
+      Check_Branch ("master");
       if OK and then Arg.Tag.Get then
          TAG;
       end if;
+
+      if Arg.Default_VersionSet /= To_String (Arg.VersionSet.Get) then
+         Update_Version (To_String (Arg.VersionSet.Get));
+      end if;
+
       if OK and then (Arg.Patch.Get or else Arg.Minor.Get or else Arg.Major.Get) then
          Update_Version;
       end if;

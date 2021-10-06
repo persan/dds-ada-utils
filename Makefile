@@ -21,4 +21,11 @@ edit:
 Makefile.conf:Makefile
 	echo "export PATH:=${PATH}:${CURDIR}/bin" >${@}
 
+master:
+	git checkout master
+merge:
+	git checkout master
+	git pull
+	git checkout request-response-wip
+	git merge master
 
